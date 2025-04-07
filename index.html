@@ -11,6 +11,8 @@
         /* Apply Gill Sans font to all text and popups */
         body, .leaflet-popup-content, .leaflet-popup-content a {
             font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif;
+            font-size: 12pt;
+            font-weight: normal;
         }
     </style>
 </head>
@@ -20,51 +22,34 @@
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-    // Initialize the map (center it near the covered area)
+
+// Initialize the map (center it near the covered area)
     var map = L.map('map').setView([40, 0], 2); // Adjust zoom for visibility
 
-    // OpenStreetMap base layer
+// OpenStreetMap base layer
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // OpenSeaMap nautical layer
+// OpenSeaMap nautical layer
     L.tileLayer('https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenSeaMap contributors'
     }).addTo(map);
 
-    // Define rectangle boundaries
-    var bounds1 = [
-        [43.886852, 6.054539],  // Top-left (NW)
-        [42.922593, 7.873927]   // Bottom-right (SE)
+// Boudary La Belle Époque
+    var boundarylabelleepoque = [
+        [43.99, 6.0],  // Top-left (NW)
+        [42.8, 7.973927]   // Bottom-right (SE)
     ];
-
-    // Create a semi-transparent rectangle
-    var rect1 = L.rectangle(bounds1, {
-        color: "#cab169", 
-        weight: 2,
+    var rectlabelleepoque = L.rectangle(boundarylabelleepoque, {
+        color: "#000000", 
+        weight: 1,
         fillColor: "#cab169",
-        fillOpacity: 0.5
+        fillOpacity: 0.4
     }).addTo(map);
+    rectlabelleepoque.bindPopup('<b>La Belle Époque</b><br><a href="https://www.theownersclub.org/journeys/western-med/la-belle-epoque" target="_blank">Visit Journey Page</a>');
 
-    // Add a popup with a link (opens in a new tab)
-    rect1.bindPopup('<b>La Belle Époque</b><br><a href="https://www.theownersclub.org/journeys/western-med/la-belle-epoque" target="_blank">Visit Journey Page</a>');
-
-    var bounds2 = [
-        [23.886852, 6.054539],  // Top-left (NW)
-        [20.922593, 4.873927]   // Bottom-right (SE)
-    ];
-
-    var rect2 = L.rectangle(bounds2, {
-        color: "#cab169", 
-        weight: 2,
-        fillColor: "#cab169",
-        fillOpacity: 0.5
-    }).addTo(map);
-
-    rect2.bindPopup('<b>Mr Bum-Head</b><br><a href="https://www.theownersclub.org/journeys/western-med/la-belle-epoque" target="_blank">Visit Journey Page</a>');
-
-    // Define custom icon using a PNG from Wix media
+// Define Marker icon
     var customIcon = L.icon({
         iconUrl: 'https://static.wixstatic.com/media/327302_414b1f4e42534efa826ce0d1d4526523~mv2.png',
         iconSize: [24, 36],
@@ -72,24 +57,36 @@
         popupAnchor: [0, -32]
     });
 
-    var marker;
-
+// --- Marker San Remo ---
+    var markersanremo;
     function updateMarker() {
-        if (map.getZoom() >= 8) {
-            if (!marker) {
-                marker = L.marker([51.505, -0.09], { icon: customIcon }).addTo(map)
-                    .bindPopup("<b>Custom Location</b><br>Example description.");
-            }
-        } else {
-            if (marker) {
-                map.removeLayer(marker);
-                marker = null;
-            }
-        }
+    if (map.getZoom() >= 8) {
+        if (!markersanremo) {
+            markersanremo = L.marker([43.8150, 7.7855], { icon: customIcon }).addTo(map)
+                .bindPopup("<b>San Remo</b>", {
+                    closeButton: false,
+                    autoClose: false,
+                    closeOnClick: false
+                });
+            setTimeout(() => {
+                markersanremo.openPopup();
+            }, 0);
     }
-
+    } else {
+        if (markersanremo) {
+            map.removeLayer(markersanremo);
+            markersanremo = null;
+    }
+    }
+    }
     map.on('zoomend', updateMarker);
     updateMarker();
+
+ 
+ 
+ 
+ 
+
 </script>
 
 </body>
